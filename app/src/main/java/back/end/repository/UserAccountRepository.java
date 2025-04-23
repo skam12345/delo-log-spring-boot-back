@@ -14,8 +14,8 @@ import back.end.domain.UserAccount;
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
     /* 로그인 */
-    @Query(value = "SELECT * FROM user_account_table WHERE user_id = :userId AND user_password = :userPassword", nativeQuery = true)
-    public UserAccount getLoginInfo(@Param("userId") String userId, @Param("userPassword") String userPassword);
+    @Query(value = "SELECT * FROM user_account_table WHERE user_id = :userId", nativeQuery = true)
+    public UserAccount getLoginInfo(@Param("userId") String userId);
     /* 회원가입 */
     @Modifying
     @Transactional

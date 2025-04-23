@@ -5,10 +5,11 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import back.end.domain.UserAccount;
@@ -21,13 +22,23 @@ public class UserAccountService {
     
     private final UserAccountRepository userAccountRepository;
     private final JavaMailSender mailSender;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserAccount getLoginInfo(String userId, String userPassword) {
-        return userAccountRepository.getLoginInfo(userId, userPassword);
+    public Map<String, Object> getLoginInfo(String userId, String userPassword) {
+        UserAccount userAccount = userAccountRepository.getLoginInfo(userId);
+
+        if(userAccount == null) {
+            System.out.println("여기서 실행 되나요?");
+            return Map.of("account", "인증 실패", "certificate", false);
+        }
+
+        return Map.of("account", userAccount, "certificate", passwordEncoder.matches(userPassword, userAccount.getUserPassword()));
     }
 
     public void signUpUserAccount(String userAuthority, String userId, String userPassword, String userNickname, String userReasonForJoin, String userEmail) {
-        userAccountRepository.insertSignUpUserAccount(userAuthority, userId, userPassword, userNickname, userReasonForJoin, userEmail);
+        String encodedPassword = passwordEncoder.encode(userPassword);
+
+        userAccountRepository.insertSignUpUserAccount(userAuthority, userId, encodedPassword, userNickname, userReasonForJoin, userEmail);
     }
 
     public void sendUserIdToEmail(String userNickname, String userEmail) throws MessagingException, UnsupportedEncodingException {

@@ -33,15 +33,15 @@ public class UserAccountController {
         System.out.println("userId: " + loginRequest.getUserId());
         System.out.println("userPassword: " + loginRequest.getUserPassword());
 
-        UserAccount user = userAccountService.getLoginInfo(
+        Map<String, Object> finalCertification = userAccountService.getLoginInfo(
             loginRequest.getUserId(), 
             loginRequest.getUserPassword()
         );
         
-        if(user != null) {
-            return ResponseEntity.ok(user);
+        if(finalCertification.get("certificate").equals(true)) {
+            return ResponseEntity.ok(finalCertification.get("account"));
         }else {
-            return ResponseEntity.ok(Map.of("message", "로그인 실험"));
+            return ResponseEntity.ok(Map.of("message", "로그인 실패"));
         }
     }
 
