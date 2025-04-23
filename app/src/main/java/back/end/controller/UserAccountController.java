@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/userAccount")
-@CrossOrigin(origins = "http://localhost:3002", allowedHeaders = "*")
+@CrossOrigin(origins = "https://de-lo-log.site", allowedHeaders = "*")
 public class UserAccountController {
     
     private final UserAccountService userAccountService;

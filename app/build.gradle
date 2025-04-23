@@ -44,8 +44,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-    sourceCompatibility = JavaVersion.VERSION_18
-    targetCompatibility = JavaVersion.VERSION_18
+    // sourceCompatibility = JavaVersion.VERSION_18
+    // targetCompatibility = JavaVersion.VERSION_18
 }
 
 application {
