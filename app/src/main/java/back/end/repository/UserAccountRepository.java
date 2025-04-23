@@ -31,7 +31,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
     /*비밀번호 찾기 후 -> 새로운 비밀번호로 변경 */
     @Modifying
     @Transactional
-    @Query("Update set userPassword = :newPassword where userIdx = :userIdx")
+    @Query("Update UserAccount u set u.userPassword = :newPassword where u.userIdx = :userIdx")
     public void newUpdatePassword(@Param("userIdx") Integer userIdx, @Param("newPassword") String newPassword);
 
 

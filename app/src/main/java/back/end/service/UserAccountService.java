@@ -16,6 +16,8 @@ import back.end.domain.UserAccount;
 import back.end.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class UserAccountService {
