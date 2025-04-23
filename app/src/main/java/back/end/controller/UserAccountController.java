@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import back.end.domain.FindIdRequest;
 import back.end.domain.FindPasswordRequest;
 import back.end.domain.LoginRequest;
-import back.end.domain.UserAccount;
+import back.end.domain.NewUpdatePasswordRequest;
 import back.end.domain.SignUpRequest;
 import back.end.service.UserAccountService;
 import jakarta.mail.MessagingException;
@@ -76,6 +76,23 @@ public class UserAccountController {
             }
         }
         return returnValue;
+    }
+
+    @PostMapping("/new-password")
+    public ResponseEntity<Map<String, String>> newUpdatePassword(@RequestBody NewUpdatePasswordRequest request) {
+        try {
+            Map<String, Object> compareBeforePasword = userAccountService.getLoginInfo(request.getUserId(), request.getNewPassword());
+            if(compareBeforePasword.get("certificate").equals(false)) {
+                userAccountService.newUpdatePassword(request.getNewPassword(), request.getUserId());
+
+                return ResponseEntity.ok(Map.of("message", "패스워드 변경 완료"));
+            }else {
+                return ResponseEntity.ok(Map.of("error", "이전과 동일한 비밀번호입니다.\n 다른 비밀번호로 시도해 주시기 바랍니다."));
+            }
+        } catch (IllegalArgumentException e) {
+            // 오류 메시지 출력
+            return ResponseEntity.ok(Map.of("error", "잘못된 요청이 발생했습니다. 다시 시도해 주세요."));
+        }
     }
 
     @PostMapping("/find-id")

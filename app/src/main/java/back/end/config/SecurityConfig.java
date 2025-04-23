@@ -21,7 +21,7 @@ public class SecurityConfig {
             .cors() // CORS 설정 활성화
             .and()
             .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
-                .requestMatchers("/userAccount/login", "/userAccount/find-id", "/userAccount/find-password",  "/userAccount/sign-up").permitAll()
+                .requestMatchers("/userAccount/login", "/userAccount/find-id", "/userAccount/find-password",  "/userAccount/sign-up", "/userAccount/new-password").permitAll()
                 .anyRequest().authenticated() // 나머지 요청은 인증 필요
             .and()
             .formLogin().disable() // 기본 로그인 폼 비활성화

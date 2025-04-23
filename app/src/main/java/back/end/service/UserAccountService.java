@@ -41,6 +41,13 @@ public class UserAccountService {
         userAccountRepository.insertSignUpUserAccount(userAuthority, userId, encodedPassword, userNickname, userReasonForJoin, userEmail);
     }
 
+    public void newUpdatePassword(String newPassword, String userId) {
+        Integer userIdx = userAccountRepository.getLoginInfo(userId).getUserIdx();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+
+        userAccountRepository.newUpdatePassword(userIdx, encodedPassword);
+    }
+
     public void sendUserIdToEmail(String userNickname, String userEmail) throws MessagingException, UnsupportedEncodingException {
         UserAccount userAccount = userAccountRepository.findIdByUserNicknameAndUserEmail(userNickname, userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다."));

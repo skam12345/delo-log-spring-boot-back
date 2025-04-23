@@ -27,6 +27,15 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
             @Param("userReasonForJoin") String userReasonForJoin,
             @Param("userEmail") String userEmail);
 
+    
+    /*비밀번호 찾기 후 -> 새로운 비밀번호로 변경 */
+    @Modifying
+    @Transactional
+    @Query("Update set userPassword = :newPassword where userIdx = :userIdx")
+    public void newUpdatePassword(@Param("userIdx") Integer userIdx, @Param("newPassword") String newPassword);
+
+
+
     /* 아이디 찾기 */
     Optional<UserAccount> findIdByUserNicknameAndUserEmail(String userNickname, String userEmail);
 
