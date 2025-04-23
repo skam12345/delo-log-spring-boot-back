@@ -1,0 +1,44 @@
+package back.end.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable() // CSRF 비활성화
+            .cors() // CORS 설정 활성화
+            .and()
+            .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
+                .requestMatchers("/userAccount/login", "/userAccount/find-id", "/userAccount/find-password",  "/userAccount/sign-up").permitAll()
+                .anyRequest().authenticated() // 나머지 요청은 인증 필요
+            .and()
+            .formLogin().disable() // 기본 로그인 폼 비활성화
+            .httpBasic().disable(); // 기본 HTTP 인증 비활성화
+
+        return http.build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3002")  // 프론트엔드 도메인
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+}
