@@ -77,7 +77,7 @@ public class UserAccountService {
         
         // 이메일 내용 작성
         String subject = "[비밀번호 찾기 안내]";
-        String text = String.format("DeLo Blog에 찾아와 주신 것에 정말 감사합니다. \n  요청하신 비밀번호는 [%s] 입니다.", userAccount.getUserPassword());
+        String text = String.format("DeLo Blog에 찾아와 주신 것에 정말 감사합니다.\n사용자님께서 요청하신 비밀번호 찾기 인증은 완료하였습니다.\n잊어버린 비밀번호는 보안을 위해 변경이 필요합니다. \n요청하신 정보를 확인하기 위해 정보를 제공합니다. [요청하신 정보]\n\n--------------------------------------------------------\n\n    아이디: %s\n    닉네임: %s\n    이메일: %s\n\n--------------------------------------------------------\n\n비밀번호를 변경하길 원하신 다면 아래 링크로 가셔서 비밀번호를 변경하시기 바랍니다.\n\n<a href='https://de-lo-log.site/3ITrAcln7HzauQUOxdAq35rmAvDCKVE9vEUcu5qX/58=/tKHFmm/Vx7VyZveAvyXy5i5M0RWu8gg1ifj48CQpNns=/jIPzeTs6e7mtG2v1FWmtX4cmsJXRGXcuHlc9u66Zj2M='>https://de-lo-log.site/3ITrAcln7HzauQUOxdAq35rmAvDCKVE9vEUcu5qX/58=/tKHFmm/Vx7VyZveAvyXy5i5M0RWu8gg1ifj48CQpNns=/jIPzeTs6e7mtG2v1FWmtX4cmsJXRGXcuHlc9u66Zj2M=</a>\n\n----------------------------------------------\n\n**주의**\n링크를 들어가셨다가 링크를 나오면 다시 비밀번호 찾기를 해야할 수 있으므로 주의하시기 바랍니다.", userAccount.getUserId(), userAccount.getUserNickname(), userAccount.getUserEmail());
         
         // 이메일 객체 생성
         MimeMessage message = mailSender.createMimeMessage();
