@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posting")
-@CrossOrigin(origins = {"https://de-lo-log.site", "http://localhost:3000"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"https://de-lo-log.site", "http://localhost:3002","https://aks.delog-back.space"}, allowedHeaders = "*")
 public class ModelPostingController {
     
     private final ModelPostingService modelPostingService;

@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posting")
-@CrossOrigin(origins = {"https://de-lo-log.site", "http://localhost:3002"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"https://de-lo-log.site", "http://localhost:3002", "https://aks.delog-back.space"}, allowedHeaders = "*")
 public class ImagePostingController {
 
     private final ImagePostingService imagePostingService;

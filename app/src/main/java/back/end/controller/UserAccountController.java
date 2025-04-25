@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/userAccount")
-@CrossOrigin(origins = {"https://de-lo-log.site", "localhost:3002"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"https://de-lo-log.site", "localhost:3002", "https://aks.delog-back.space"}, allowedHeaders = "*")
 public class UserAccountController {
     
     private final UserAccountService userAccountService;

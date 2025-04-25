@@ -21,7 +21,7 @@ public class SecurityConfig {
             .cors() // CORS 설정 활성화
             .and()
             .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
-                .requestMatchers("/userAccount/**", "/posting/write/**", "/posting/list/**", "/posting/view/**", "/about/**").permitAll()
+                .requestMatchers("/userAccount/**", "/posting/**").permitAll()
                 .anyRequest().authenticated() // 나머지 요청은 인증 필요
             .and()
             .formLogin().disable() // 기본 로그인 폼 비활성화
@@ -36,7 +36,7 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3002, https://de-lo-log.site")  // 프론트엔드 도메인
+                        .allowedOrigins("https://de-lo-log.site", "http://localhost:3002")  // 프론트엔드 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
