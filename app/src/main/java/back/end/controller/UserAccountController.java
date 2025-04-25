@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import back.end.domain.FindIdRequest;
-import back.end.domain.FindPasswordRequest;
-import back.end.domain.LoginRequest;
-import back.end.domain.NewUpdatePasswordRequest;
-import back.end.domain.SignUpRequest;
+import back.end.domain.account.FindIdRequest;
+import back.end.domain.account.FindPasswordRequest;
+import back.end.domain.account.LoginRequest;
+import back.end.domain.account.NewUpdatePasswordRequest;
+import back.end.domain.account.SignUpRequest;
 import back.end.service.UserAccountService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/userAccount")
-@CrossOrigin(origins = "https://de-lo-log.site", allowedHeaders = "*")
+@CrossOrigin(origins = {"https://de-lo-log.site", "localhost:3002"}, allowedHeaders = "*")
 public class UserAccountController {
     
     private final UserAccountService userAccountService;

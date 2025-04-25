@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import back.end.domain.UserAccount;
+import back.end.domain.account.UserAccount;
 
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {

@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import back.end.domain.UserAccount;
+import back.end.domain.account.UserAccount;
 import back.end.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 
