@@ -17,16 +17,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable() // CSRF 비활성화
-            .cors() // CORS 설정 활성화
-            .and()
-            .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
-                .requestMatchers("/userAccount/**").permitAll()
-                .requestMatchers("/posting/**").hasRole("USER")
-                .anyRequest().authenticated() // 나머지 요청은 인증 필요
-            .and()
-            .formLogin().disable() // 기본 로그인 폼 비활성화
-            .httpBasic().disable(); // 기본 HTTP 인증 비활성화
+        .requiresChannel()
+            .requestMatchers(r -> r.getRequestURI().startsWith("/posting")).requiresSecure()  // Enforce HTTPS for "/posting" paths
+        .and()
+        .authorizeRequests()
+            .requestMatchers("/userAccount/**").permitAll()
+            .requestMatchers("/posting/**").permitAll()
+            .anyRequest().authenticated();
 
         return http.build();
     }
