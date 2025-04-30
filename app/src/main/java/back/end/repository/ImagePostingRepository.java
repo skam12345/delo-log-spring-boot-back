@@ -31,6 +31,8 @@ public interface ImagePostingRepository extends JpaRepository<ImagePosting, Inte
     @Query("Select ip from ImagePosting ip")
     public List<ImagePosting> getAllPosting();
 
+    @Modifying
+    @Transactional
     @Query("Update ImagePosting i set i.creationVisible = :visibled, i.creationTitle = :title, i.creationThumbnail = :thumbnail, i.creationEditorContent = :editorContent, i.creationResultContent = :resultContent, i.updatedAt = :updatedAt where i.creationIdx = :idx")
     public void updateImagePosting(@Param("visibled") Boolean visibled,
             @Param("title") String title,
@@ -40,7 +42,7 @@ public interface ImagePostingRepository extends JpaRepository<ImagePosting, Inte
             @Param("updatedAt") LocalDateTime updatedAt,
             @Param("idx") Integer idx);
     
-    @Query("Delete from ImagePosting i where i.creationIdx = :idx")
+    @Query("Delete from ImagePosting ip where ip.creationIdx = :idx")
     public void deleteImagePosting(@Param("idx") Integer idx);
 
     @Query(value = "SELECT * FROM delo_2d_creation_table  WHERE creation_idx = :idx", nativeQuery = true)

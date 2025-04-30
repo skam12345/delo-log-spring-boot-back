@@ -36,7 +36,8 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://de-lo-log.site")  // 프론트엔드 도메인
+                        .allowedOrigins("https://de-lo-log.site")
+                        .allowedOrigins("http://localhost:3002")  // 프론트엔드 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
