@@ -23,6 +23,14 @@ public class ImagePostingService {
         return imagePostingRepository.getAllPosting();
     }
 
+    public void deleteImagePosting(Integer idx) {
+        imagePostingRepository.deleteImagePosting(idx);
+    }
+
+    public LocalDateTime getCreatedAt(Integer idx) {
+        return imagePostingRepository.getCreatedAt(idx);
+    }
+
     public ImagePosting selectOnePosting(Integer idx) {
         return imagePostingRepository.selectOnePosting(idx);
     }

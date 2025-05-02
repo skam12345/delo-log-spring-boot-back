@@ -83,4 +83,29 @@ public class ImagePostingController {
         return ResponseEntity.ok(Map.of("message", "잘못된 요청입니다.\n 개발자에게 문의하시기 바랍니다."));
     }
 
+    @PostMapping("/delete/image-posting")
+    public ResponseEntity<Map<String, String>> deletePosting(@RequestBody ViewImageOnePostingRequest request) {
+        ResponseEntity<Map<String, String>> returnValue = null;
+        try {
+            imagePostingService.deleteImagePosting(request.getIdx());
+            returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
+        }catch(IllegalArgumentException e) {
+            returnValue = ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
+
+        return returnValue;
+    }
+
+    @PostMapping("/delete/new-posting")
+    public ResponseEntity<?> deleteNewPosting(@RequestBody ViewImageOnePostingRequest request) {
+        try {
+            LocalDateTime createdAt = imagePostingService.getCreatedAt(request.getIdx());
+            
+            imagePostingService.deleteImagePosting(request.getIdx());
+
+            return ResponseEntity.ok(Map.of("message", "게시물 삭제 완료", "createdAt", createdAt));
+        }catch(IllegalArgumentException e) {
+            return ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
+    }
 }
