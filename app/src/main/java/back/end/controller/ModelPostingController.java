@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import back.end.domain.posting.image.ViewImageOnePostingRequest;
-import back.end.domain.posting.threed.InsertThreedPostingRequest;
+import back.end.domain.posting.threed.ThreedNewPostingRequest;
 import back.end.domain.posting.threed.ThreedPosting;
 import back.end.domain.posting.threed.ViewModelOnePostingRequest;
 import back.end.service.ModelPostingService;
@@ -27,7 +27,7 @@ public class ModelPostingController {
     private final ModelPostingService modelPostingService;
 
     @PostMapping("/write/model-posting")
-    public ResponseEntity<Map<String, String>> modelPosting(@RequestBody InsertThreedPostingRequest request) {
+    public ResponseEntity<Map<String, String>> modelPosting(@RequestBody ThreedNewPostingRequest request) {
         ResponseEntity<Map<String, String>> returnValue = null;
 
         try {
@@ -37,7 +37,7 @@ public class ModelPostingController {
             System.out.println(modelList);
             if(modelList != null && !request.getThumbnail().equals("")) {
                 for(int i = 0; i < modelList.size(); i++) {
-                    models += modelList.get(i) + "|"; 
+                    models += modelList.get(i) + "::"; 
                 }
                 thumbnail = request.getThumbnail();
             }else {
@@ -52,7 +52,7 @@ public class ModelPostingController {
                 thumbnail,
                 request.getEditorContent(),
                 request.getResultContent(),
-                LocalDateTime.now()
+                request.getCreatedAt() != null ? request.getCreatedAt(): LocalDateTime.now()
             );
 
             returnValue = ResponseEntity.ok(Map.of("message", "포스팅이 완료되었습니다."));
@@ -90,9 +90,9 @@ public class ModelPostingController {
         ResponseEntity<Map<String, String>> returnValue = null;
         try {
             String keys = modelPostingService.getModels(request.getIdx());
-            String[] keyList = keys.split("|");
-            for(String key : keyList) {
-                modelPostingService.deleteFile(key);
+            String[] keyList = keys.split("::");
+            for(int i = 0; i < keyList.length; i++) {
+                modelPostingService.deleteFile(keyList[i]);
             }
             modelPostingService.deleteModelPosting(request.getIdx());
             returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
@@ -108,9 +108,9 @@ public class ModelPostingController {
         try {
             LocalDateTime createdAt = modelPostingService.getCreatedAt(request.getIdx());
             String keys = modelPostingService.getModels(request.getIdx());
-            String[] keyList = keys.split("|");
-            for(String key : keyList) {
-                modelPostingService.deleteFile(key);
+            String[] keyList = keys.split("::");
+            for(int i = 0; i < keyList.length; i++) {
+                modelPostingService.deleteFile(keyList[i]);
             }
             modelPostingService.deleteModelPosting(request.getIdx());
 

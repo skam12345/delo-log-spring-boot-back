@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import back.end.domain.posting.image.InsertImagePostingRequest;
 import back.end.domain.posting.image.ViewImageOnePostingRequest;
+import back.end.domain.posting.image.ImageNewPostingRequest;
 import back.end.domain.posting.image.ImagePosting;
 import back.end.service.ImagePostingService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class ImagePostingController {
     private final ImagePostingService imagePostingService;
 
     @PostMapping("/write/image-posting")
-    public ResponseEntity<Map<String, String>> imagePosting(@RequestBody InsertImagePostingRequest request) {
+    public ResponseEntity<Map<String, String>> imagePosting(@RequestBody ImageNewPostingRequest request) {
         ResponseEntity<Map<String, String>> returnValue = null;
         try {
             List<String> imageList = request.getImageList();
@@ -35,7 +35,7 @@ public class ImagePostingController {
             String thumbnail = "";
             if(imageList != null && !request.getThumbnail().equals("")) {
                 for(int i = 0 ; i < imageList.size(); i++) {
-                    images += imageList.get(i) + "|";
+                    images += imageList.get(i) + "::";
                 }
                 thumbnail = request.getThumbnail();
             }else {
@@ -50,7 +50,7 @@ public class ImagePostingController {
                 thumbnail,
                 request.getEditorContent(),
                 request.getResultContent(),
-                LocalDateTime.now()
+                request.getCreatedAt() != null ? request.getCreatedAt(): LocalDateTime.now()
             );
 
             returnValue = ResponseEntity.ok(Map.of("message", "포스팅이 완료되었습니다."));
@@ -88,9 +88,9 @@ public class ImagePostingController {
         ResponseEntity<Map<String, String>> returnValue = null;
         try {
             String keys = imagePostingService.getImages(request.getIdx());
-            String[] keyList = keys.split("|");
-            for(String key : keyList) {
-                imagePostingService.deleteFile(key);
+            String[] keyList = keys.split("::");
+            for(int i = 0;  i <  keyList.length; i++) {
+                imagePostingService.deleteFile(keyList[i]);
             }
             imagePostingService.deleteImagePosting(request.getIdx());
             returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
@@ -106,9 +106,9 @@ public class ImagePostingController {
         try {
             LocalDateTime createdAt = imagePostingService.getCreatedAt(request.getIdx());
             String keys = imagePostingService.getImages(request.getIdx());
-            String[] keyList = keys.split("|");
-            for(String key : keyList) {
-                imagePostingService.deleteFile(key);
+            String[] keyList = keys.split("::");
+            for(int i = 0;  i <  keyList.length; i++) {
+                imagePostingService.deleteFile(keyList[i]);
             }
             imagePostingService.deleteImagePosting(request.getIdx());
 
