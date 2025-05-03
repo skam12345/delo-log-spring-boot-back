@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import back.end.domain.posting.image.ViewImageOnePostingRequest;
-import back.end.domain.posting.music.InsertMusicPostingRequest;
+import back.end.domain.posting.music.MusicNewPostingRequest;
 import back.end.domain.posting.music.MusicPosting;
 import back.end.domain.posting.music.ViewMusicOnePostingRequest;
 import back.end.service.MusicPostingService;
@@ -27,7 +27,7 @@ public class MusicPostingController {
     private final MusicPostingService musicPostingService;
 
     @PostMapping("/write/music-posting")
-    public ResponseEntity<Map<String, String>> musicPosting(@RequestBody InsertMusicPostingRequest request) {
+    public ResponseEntity<Map<String, String>> musicPosting(@RequestBody MusicNewPostingRequest request) {
         ResponseEntity<Map<String, String>> returnValue = null;
         
         try {
@@ -52,7 +52,7 @@ public class MusicPostingController {
                 thumbnail,
                 request.getEditorContent(),
                 request.getResultContent(),
-                LocalDateTime.now()
+                request.getCreatedAt() != null ? request.getCreatedAt(): LocalDateTime.now()
             );
 
             returnValue = ResponseEntity.ok(Map.of("message", "포스팅이 완료되었습니다."));

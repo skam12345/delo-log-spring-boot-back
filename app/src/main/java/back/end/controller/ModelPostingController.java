@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import back.end.domain.posting.image.ViewImageOnePostingRequest;
-import back.end.domain.posting.threed.InsertThreedPostingRequest;
+import back.end.domain.posting.threed.ThreedNewPostingRequest;
 import back.end.domain.posting.threed.ThreedPosting;
 import back.end.domain.posting.threed.ViewModelOnePostingRequest;
 import back.end.service.ModelPostingService;
@@ -27,7 +27,7 @@ public class ModelPostingController {
     private final ModelPostingService modelPostingService;
 
     @PostMapping("/write/model-posting")
-    public ResponseEntity<Map<String, String>> modelPosting(@RequestBody InsertThreedPostingRequest request) {
+    public ResponseEntity<Map<String, String>> modelPosting(@RequestBody ThreedNewPostingRequest request) {
         ResponseEntity<Map<String, String>> returnValue = null;
 
         try {
@@ -52,7 +52,7 @@ public class ModelPostingController {
                 thumbnail,
                 request.getEditorContent(),
                 request.getResultContent(),
-                LocalDateTime.now()
+                request.getCreatedAt() != null ? request.getCreatedAt(): LocalDateTime.now()
             );
 
             returnValue = ResponseEntity.ok(Map.of("message", "포스팅이 완료되었습니다."));
