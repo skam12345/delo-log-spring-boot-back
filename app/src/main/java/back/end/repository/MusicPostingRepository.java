@@ -31,20 +31,18 @@ public interface MusicPostingRepository extends JpaRepository<MusicPosting, Inte
 
     @Query("Select mp from MusicPosting mp")
     public List<MusicPosting> getAllPosting();
-
-    @Query("Update MusicPosting mp set mp.creationVisible = :visibled, mp.creationTitle = :title, mp.creationMusic = :music, mp.creationThumbnail = :thumbnail, mp.creationEditorContent = :editorContent, mp.creationResultContent = :resultContent, mp.updatedAt = :updatedAt where mp.creationIdx = :idx ")
-    public void updateMusicPosting(
-            @Param("visibled") Boolean visibled,
-            @Param("title") String title,
-            @Param("music") String music,
-            @Param("thumbnail") String thumbnail,
-            @Param("editorContent") String editorContent,
-            @Param("resultContent") String resultContent,
-            @Param("updatedAt") LocalDateTime updatedAt,
-            @Param("idx") Integer idx);
     
+    @Modifying
+    @Transactional
     @Query("Delete from MusicPosting mp where mp.creationIdx = :idx")
-    public void deleteModelPosting(@Param("idx") Integer idx);
+    public void deleteMusicPosting(@Param("idx") Integer idx);
+
+    @Query(value = "Select created_at from delo_music_creation_table where creation_idx = :idx", nativeQuery = true)
+    public LocalDateTime getCreatedAt(@Param("idx") Integer idx);
+
+    @Query(value = "Select creation_image from delo_music_creation_table where creation_idx  = :idx", nativeQuery = true)
+    public String getMusic(@Param("idx") Integer idx);
+
 
     @Query(value = "SELECT * FROM delo_music_creation_table  WHERE creation_idx = :idx", nativeQuery = true)
     public MusicPosting selectOnePosting(@Param("idx") Integer idx);

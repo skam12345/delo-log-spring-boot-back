@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import back.end.domain.posting.image.ViewImageOnePostingRequest;
 import back.end.domain.posting.music.InsertMusicPostingRequest;
 import back.end.domain.posting.music.MusicPosting;
 import back.end.domain.posting.music.ViewMusicOnePostingRequest;
@@ -84,4 +85,38 @@ public class MusicPostingController {
         return ResponseEntity.ok(Map.of("message", "잘못된 요청입니다.\n 개발자에게 문의하시기 바랍니다."));
     }
 
+     @PostMapping("/delete/music-posting")
+    public ResponseEntity<Map<String, String>> deletePosting(@RequestBody ViewImageOnePostingRequest request) {
+        ResponseEntity<Map<String, String>> returnValue = null;
+        try {
+            String keys = musicPostingService.getMusic(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                musicPostingService.deleteFile(key);
+            }
+            musicPostingService.deleteMusicPosting(request.getIdx());
+            returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
+        }catch(IllegalArgumentException e) {
+            returnValue = ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
+
+        return returnValue;
+    }
+
+    @PostMapping("/delete/music-new-posting")
+    public ResponseEntity<?> deleteNewPosting(@RequestBody ViewImageOnePostingRequest request) {
+        try {
+            LocalDateTime createdAt = musicPostingService.getCreatedAt(request.getIdx());
+            String keys = musicPostingService.getMusic(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                musicPostingService.deleteFile(key);
+            }
+            musicPostingService.deleteMusicPosting(request.getIdx());
+
+            return ResponseEntity.ok(Map.of("message", "게시물 삭제 완료", "createdAt", createdAt));
+        }catch(IllegalArgumentException e) {
+            return ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
+    }
 }

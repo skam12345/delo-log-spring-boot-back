@@ -87,6 +87,11 @@ public class ImagePostingController {
     public ResponseEntity<Map<String, String>> deletePosting(@RequestBody ViewImageOnePostingRequest request) {
         ResponseEntity<Map<String, String>> returnValue = null;
         try {
+            String keys = imagePostingService.getImages(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                imagePostingService.deleteFile(key);
+            }
             imagePostingService.deleteImagePosting(request.getIdx());
             returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
         }catch(IllegalArgumentException e) {
@@ -96,11 +101,15 @@ public class ImagePostingController {
         return returnValue;
     }
 
-    @PostMapping("/delete/new-posting")
+    @PostMapping("/delete/image-new-posting")
     public ResponseEntity<?> deleteNewPosting(@RequestBody ViewImageOnePostingRequest request) {
         try {
             LocalDateTime createdAt = imagePostingService.getCreatedAt(request.getIdx());
-            
+            String keys = imagePostingService.getImages(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                imagePostingService.deleteFile(key);
+            }
             imagePostingService.deleteImagePosting(request.getIdx());
 
             return ResponseEntity.ok(Map.of("message", "게시물 삭제 완료", "createdAt", createdAt));

@@ -39,6 +39,9 @@ public interface ImagePostingRepository extends JpaRepository<ImagePosting, Inte
     @Query(value = "Select created_at from delo_2d_creation_table where creation_idx = :idx", nativeQuery = true)
     public LocalDateTime getCreatedAt(@Param("idx") Integer idx);
 
+    @Query(value = "Select creation_image from delo_2d_creation_table where creation_idx  = :idx", nativeQuery = true)
+    public String getImages(@Param("idx") Integer idx);
+
     @Query(value = "SELECT * FROM delo_2d_creation_table  WHERE creation_idx = :idx", nativeQuery = true)
     public ImagePosting selectOnePosting(@Param("idx") Integer idx);
 }

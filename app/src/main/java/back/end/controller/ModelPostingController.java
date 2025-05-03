@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import back.end.domain.posting.image.ViewImageOnePostingRequest;
 import back.end.domain.posting.threed.InsertThreedPostingRequest;
 import back.end.domain.posting.threed.ThreedPosting;
 import back.end.domain.posting.threed.ViewModelOnePostingRequest;
@@ -82,5 +83,40 @@ public class ModelPostingController {
         }
 
         return ResponseEntity.ok(Map.of("message", "잘못된 요청입니다.\n 개발자에게 문의하시기 바랍니다."));
+    }
+    
+     @PostMapping("/delete/model-posting")
+    public ResponseEntity<Map<String, String>> deletePosting(@RequestBody ViewImageOnePostingRequest request) {
+        ResponseEntity<Map<String, String>> returnValue = null;
+        try {
+            String keys = modelPostingService.getModels(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                modelPostingService.deleteFile(key);
+            }
+            modelPostingService.deleteModelPosting(request.getIdx());
+            returnValue = ResponseEntity.ok(Map.of("message", "게시물 삭제 완료"));
+        }catch(IllegalArgumentException e) {
+            returnValue = ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
+
+        return returnValue;
+    }
+
+    @PostMapping("/delete/model-new-posting")
+    public ResponseEntity<?> deleteNewPosting(@RequestBody ViewImageOnePostingRequest request) {
+        try {
+            LocalDateTime createdAt = modelPostingService.getCreatedAt(request.getIdx());
+            String keys = modelPostingService.getModels(request.getIdx());
+            String[] keyList = keys.split("|");
+            for(String key : keyList) {
+                modelPostingService.deleteFile(key);
+            }
+            modelPostingService.deleteModelPosting(request.getIdx());
+
+            return ResponseEntity.ok(Map.of("message", "게시물 삭제 완료", "createdAt", createdAt));
+        }catch(IllegalArgumentException e) {
+            return ResponseEntity.ok(Map.of("error", "잘못된 요청입니다. 다시 시도해주시기 바랍니다."));
+        }
     }
 }

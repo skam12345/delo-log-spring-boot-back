@@ -30,19 +30,18 @@ public interface ModelPostingRepository extends JpaRepository<ThreedPosting, Int
     
     @Query("Select tp from ThreedPosting tp")
     public List<ThreedPosting> getAllPosting();
-
-    @Query("Update ThreedPosting tp set tp.creationVisible = :visibled, tp.creationTitle = :title, tp.creationModels = :models,  tp.creationThumbnail = :thumbnail, tp.creationEditorContent = :editorContent, tp.creationResultContent = :resultContent, tp.updatedAt = :updatedAt where tp.creationIdx = :idx")
-    public void updateModelPosting(@Param("visibled") Boolean visibled,
-            @Param("title") String title,
-            @Param("models") String models,
-            @Param("thumbnail") String thumbnail,
-            @Param("editorContent") String editorContent,
-            @Param("resultContent") String resultContent,
-            @Param("updatedAt") LocalDateTime updatedAt,
-            @Param("idx") Integer idx);
-            
+    
+    @Modifying
+    @Transactional        
     @Query("Delete from ThreedPosting tp where tp.creationIdx = :idx")
     public void deleteModelPosting(@Param("idx") Integer idx);
+
+
+    @Query(value = "Select created_at from delo_3d_creation_table where creation_idx = :idx", nativeQuery = true)
+    public LocalDateTime getCreatedAt(@Param("idx") Integer idx);
+
+    @Query(value = "Select creation_image from delo_3d_creation_table where creation_idx  = :idx", nativeQuery = true)
+    public String getModels(@Param("idx") Integer idx);
 
     @Query(value = "SELECT * FROM delo_3d_creation_table  WHERE creation_idx = :idx", nativeQuery = true)
     public ThreedPosting selectOnePosting(@Param("idx") Integer idx);
