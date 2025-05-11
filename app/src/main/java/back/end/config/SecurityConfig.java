@@ -1,28 +1,33 @@
 package back.end.config;
 
-import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@ConditionalOnDefaultWebSecurity
+@
 public class SecurityConfig {
 
     @Bean
-    @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
-        http.formLogin(Customizer.withDefaults());
-        http.httpBasic(Customizer.withDefaults());
+        http
+        .csrf().disable() // CSRF 비활성화
+        .cors() // CORS 설정 활성화
+        .and()
+        .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
+            .requestMatchers("/userAccount/**", "/posting/**").permitAll()
+            .anyRequest().authenticated() // 나머지 요청은 인증 필요
+        .and()
+        .formLogin(Customizer.withDefaults())
+        .httpBasic().disable(); // 기본 HTTP 인증 비활성화/ 기본 HTTP 인증 비활성화
+
         return http.build();
     }
 
