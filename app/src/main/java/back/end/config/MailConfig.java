@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
-import lombok.Value;
 
 @Configuration
 public class MailConfig {
