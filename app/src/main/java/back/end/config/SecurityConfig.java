@@ -23,10 +23,7 @@ public class SecurityConfig {
         .and()
         .authorizeHttpRequests() // authorizeRequests() 대신 authorizeHttpRequests() 사용
             .requestMatchers("/userAccount/**", "/posting/**").permitAll()
-            .anyRequest().authenticated() // 나머지 요청은 인증 필요
-        .and()
-        .formLogin(Customizer.withDefaults())
-        .httpBasic().disable(); // 기본 HTTP 인증 비활성화/ 기본 HTTP 인증 비활성화
+            .anyRequest().authenticated();
 
         return http.build();
     }
