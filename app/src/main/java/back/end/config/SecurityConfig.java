@@ -25,8 +25,8 @@ public class SecurityConfig {
             .requestMatchers("/userAccount/**", "/posting/**").permitAll()
             .anyRequest().authenticated() // 나머지 요청은 인증 필요
         .and()
-        .formLogin().permitAll()
-        .and().logout().permitAll();// 기본 HTTP 인증 비활성화/ 기본 HTTP 인증 비활성화
+        .formLogin(Customizer.withDefaults())
+        .httpBasic().disable(); // 기본 HTTP 인증 비활성화/ 기본 HTTP 인증 비활성화
 
         return http.build();
     }
