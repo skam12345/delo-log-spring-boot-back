@@ -36,7 +36,7 @@ public interface ImagePostingRepository extends JpaRepository<ImagePosting, Inte
             @Param("creationImageStatus") String creationImageStatus,
             @Param("uploadedAt") LocalDateTime uploadedAt);
 
-    @Query(value = "Select creation_idx from delo_2d_creatoin_table order by creation_idx desc limit 1")
+    @Query(value = "Select creation_idx from delo_2d_creatoin_table order by creation_idx desc limit 1", nativeQuery = true)
     public Integer getImagePostingLastIdx();
 
     @Modifying
