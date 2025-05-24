@@ -1,0 +1,59 @@
+
+plugins {
+    id 'org.springframework.boot' version '3.2.4' // 버전 확인!
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+
+dependencies {
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // This dependency is used by the application.
+    implementation libs.guava
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.4.0'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.4'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.google.cloud:google-cloud-storage:2.38.0'
+    implementation 'software.amazon.awssdk:s3:2.25.2'
+    implementation 'software.amazon.awssdk:auth'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'  
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'back.end.App'
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
