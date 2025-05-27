@@ -55,16 +55,17 @@ public class ImagePostingController {
     }
 
     @PostMapping("/write/image-upload")
-    public ResponseEntity<Map<String, Object>> imageUpload(@RequestParam("creationIdx") Integer creationIdx, @RequestParam("files") MultipartFile[] files, @RequestParam("thumnail") MultipartFile thumbnail) throws IOException {
+    public ResponseEntity<Map<String, Object>> imageUpload(@RequestParam("creationIdx") String creationIdx, @RequestParam("files") MultipartFile[] files, @RequestParam("thumnail") MultipartFile thumbnail) throws IOException {
         ResponseEntity<Map<String, Object>> returnValue = null;
+        Integer idx = Integer.parseInt(creationIdx);
         try {
             imagePostingService.gcsUpload(
-                creationIdx,
+                idx,
                 files,
                 thumbnail
             );
 
-            returnValue = ResponseEntity.ok(Map.of("result", 1, "uploadImages", imagePostingService.getImagesData(creationIdx)));
+            returnValue = ResponseEntity.ok(Map.of("result", 1, "uploadImages", imagePostingService.getImagesData(idx)));
         }catch (IllegalArgumentException e) {
             returnValue = ResponseEntity.ok(Map.of("result", 2));
         }
