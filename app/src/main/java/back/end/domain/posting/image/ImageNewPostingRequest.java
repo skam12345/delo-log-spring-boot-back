@@ -13,7 +13,6 @@ public class ImageNewPostingRequest {
     private Boolean visibled;
     private String title;
     private String writer;
-    private MultipartFile[] file;
     private String thumbnail;
     private String editorContent;
     private String resultContent;

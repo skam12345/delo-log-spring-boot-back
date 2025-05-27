@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import back.end.domain.posting.image.ViewImageOnePostingRequest;
 import back.end.domain.posting.image.ImageAfterUploadedUpdateRequest;
@@ -18,6 +20,7 @@ import back.end.domain.posting.image.ImageNewPostingRequest;
 import back.end.domain.posting.image.ImagePosting;
 import back.end.domain.posting.image.ImageUploadRequest;
 import back.end.service.ImagePostingService;
+import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 
 
@@ -30,7 +33,9 @@ public class ImagePostingController {
     private final ImagePostingService imagePostingService;
 
     @PostMapping("/write/insert-image-data")
-    public ResponseEntity<Map<String, String>> imagePosting(@RequestBody ImageNewPostingRequest request) throws IOException {
+    public ResponseEntity<Map<String, String>> imagePosting(
+        @RequestBody ImageNewPostingRequest request
+    ) throws IOException {
         ResponseEntity<Map<String, String>> returnValue = null;
         try {
             imagePostingService.insertImagePosting(
