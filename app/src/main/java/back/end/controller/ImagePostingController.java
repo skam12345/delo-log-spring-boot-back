@@ -18,9 +18,7 @@ import back.end.domain.posting.image.ViewImageOnePostingRequest;
 import back.end.domain.posting.image.ImageAfterUploadedUpdateRequest;
 import back.end.domain.posting.image.ImageNewPostingRequest;
 import back.end.domain.posting.image.ImagePosting;
-import back.end.domain.posting.image.ImageUploadRequest;
 import back.end.service.ImagePostingService;
-import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 
 
@@ -57,16 +55,16 @@ public class ImagePostingController {
     }
 
     @PostMapping("/write/image-upload")
-    public ResponseEntity<Map<String, Object>> imageUpload(@RequestBody  ImageUploadRequest request) throws IOException {
+    public ResponseEntity<Map<String, Object>> imageUpload(@RequestParam("creationIdx") Integer creationIdx, @RequestParam("files") MultipartFile[] files, @RequestParam("thumnail") MultipartFile thumbnail) throws IOException {
         ResponseEntity<Map<String, Object>> returnValue = null;
         try {
             imagePostingService.gcsUpload(
-                request.getCreationIdx(),
-                request.getFiles(),
-                request.getThumbnail()
+                creationIdx,
+                files,
+                thumbnail
             );
 
-            returnValue = ResponseEntity.ok(Map.of("result", 1, "uploadImages", imagePostingService.getImagesData(request.getCreationIdx())));
+            returnValue = ResponseEntity.ok(Map.of("result", 1, "uploadImages", imagePostingService.getImagesData(creationIdx)));
         }catch (IllegalArgumentException e) {
             returnValue = ResponseEntity.ok(Map.of("result", 2));
         }
