@@ -56,7 +56,7 @@ public class ImagePostingController {
     }
 
     @PostMapping("/write/image-upload")
-    public ResponseEntity<Map<String, Object>> imageUpload(@RequestParam("creationIdx") String creationIdx, @RequestPart("files") MultipartFile[] files, @RequestPart("thumnail") MultipartFile thumbnail) throws IOException {
+    public ResponseEntity<Map<String, Object>> imageUpload(@RequestParam("creationIdx") String creationIdx, @RequestPart("files") MultipartFile[] files, @RequestPart("thumbnail") MultipartFile thumbnail) throws IOException {
         ResponseEntity<Map<String, Object>> returnValue = null;
         Integer idx = Integer.parseInt(creationIdx);
         try {
