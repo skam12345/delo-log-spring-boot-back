@@ -3,15 +3,11 @@ package back.end.service;
 import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import back.end.domain.posting.image.ImagePosting;
@@ -24,8 +20,8 @@ import lombok.RequiredArgsConstructor;
 public class ImagePostingService {
     private final ImagePostingRepository imagePostingRepository;
     
-    @Value("${spring.cloud.gcp.storage.bucket}")
-    private String bucketName;
+    private final Storage storage;
+    private final String bucketName = "delog-blog";
 
 
     public Integer insertImagePosting(Boolean visibled, String title,  String writer, String thumbnail, String editorContent, String resultContent, LocalDateTime createdAt) {
@@ -76,14 +72,6 @@ public class ImagePostingService {
 
 
     public void gcsUpload(Integer creationIdx, MultipartFile[] files, MultipartFile thumbnail) throws IOException {
-        String keyFileName = "delog-blog-0a17598f6736.json";
-        InputStream keyFile = ResourceUtils.getURL("classpath:" + keyFileName).openStream();
-
-        Storage storage = StorageOptions.newBuilder()
-            .setCredentials(GoogleCredentials.fromStream(keyFile))
-            .build()
-            .getService();
-
         for (MultipartFile file : files) {
             String targetName ="image/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
