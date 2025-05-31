@@ -32,7 +32,7 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("https://de-lo-log.site")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "multipart/form-data")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
