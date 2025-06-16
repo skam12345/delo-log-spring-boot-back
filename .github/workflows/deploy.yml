@@ -1,0 +1,29 @@
+name: Deploy Backend to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@193.180.212.240 << 'EOF'
+            cd /home/admin/delo-log-spring-boot-back
+            git pull origin main
+            echo "${{ secrets.GCP_KEY_JSON_BASE64 }}" | base64 -d > src/main/resources/delog-blog-7b07f1316dae.json
+            ./gradlew build
+            nohup javar -jar ./app/build/libs/app.jar > ./app/build/libs/app.log 2>&1 &
+          EOF
