@@ -5,7 +5,10 @@ import java.util.UUID;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+import com.google.cloud.storage.*;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,6 +74,8 @@ public class ImagePostingService {
     public List<String> getImagesData(Integer postCreationIdx) {
         return imagePostingRepository.getImagesData(postCreationIdx);
     }
+
+
 
     public void s3Upload(Integer creationIdx, MultipartFile[] files, MultipartFile thumbnail) throws IOException {
         for (MultipartFile file : files) {
