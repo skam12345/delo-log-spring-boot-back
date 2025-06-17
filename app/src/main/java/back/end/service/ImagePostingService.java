@@ -5,10 +5,7 @@ import java.util.UUID;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import com.google.cloud.storage.*;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +23,7 @@ public class ImagePostingService {
     private final S3Client s3Client;
     private final ImagePostingRepository imagePostingRepository;
     
-    @Value("${gcp.storage.bucket.name}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
 
