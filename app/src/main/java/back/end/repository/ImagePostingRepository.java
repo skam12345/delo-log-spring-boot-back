@@ -17,7 +17,7 @@ public interface ImagePostingRepository extends JpaRepository<ImagePosting, Inte
     /* 2D 포스팅 */
     @Modifying
     @Transactional
-    @Query(value = "Insert into  delo_2d_creation_table(creation_visible, creation_title, creation_writer, creation_thumbnail, creation_editor_content, creation_result_content, created_at) values(:creationVisible, :creationTitle, :creationWriter, :creationThumbnail, :creationEditorContent, :creationResultContent, :createdAt)", nativeQuery = true)
+    @Query(value = "Insert into  delo_2d_creation_tnable(creation_visible, creation_title, creation_writer, creation_thumbnail, creation_editor_content, creation_result_content, created_at) values(:creationVisible, :creationTitle, :creationWriter, :creationThumbnail, :creationEditorContent, :creationResultContent, :createdAt)", nativeQuery = true)
     public void insertImagePosting(
             @Param("creationVisible") Boolean visibled,
             @Param("creationTitle") String title,

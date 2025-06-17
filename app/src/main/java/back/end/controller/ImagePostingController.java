@@ -60,11 +60,7 @@ public class ImagePostingController {
         ResponseEntity<Map<String, Object>> returnValue = null;
         Integer idx = Integer.parseInt(creationIdx);
         try {
-            imagePostingService.gcsUpload(
-                idx,
-                files,
-                thumbnail
-            );
+            imagePostingService.s3Upload(idx, files, thumbnail);
 
             returnValue = ResponseEntity.ok(Map.of("result", 1, "uploadImages", imagePostingService.getImagesData(idx)));
         }catch (IllegalArgumentException e) {

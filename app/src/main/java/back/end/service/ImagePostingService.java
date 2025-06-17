@@ -3,28 +3,27 @@ package back.end.service;
 import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
-
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import back.end.domain.posting.image.ImagePosting;
 import back.end.repository.ImagePostingRepository;
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 
 @Service
 @RequiredArgsConstructor
 public class ImagePostingService {
+    private final S3Client s3Client;
     private final ImagePostingRepository imagePostingRepository;
     
-    @Value("${spring.cloud.gcp.storage.bucket}")
+    @Value("${gcp.storage.bucket.name}")
     private String bucketName;
 
 
@@ -73,32 +72,21 @@ public class ImagePostingService {
         return imagePostingRepository.getImagesData(postCreationIdx);
     }
 
-
-
-    public void gcsUpload(Integer creationIdx, MultipartFile[] files, MultipartFile thumbnail) throws IOException {
-        String keyFileName = "delog-blog-0a17598f6736.json";
-        InputStream keyFile = ResourceUtils.getURL("classpath:" + keyFileName).openStream();
-
-        Storage storage = StorageOptions.newBuilder()
-            .setCredentials(GoogleCredentials.fromStream(keyFile))
-            .build()
-            .getService();
-
+    public void s3Upload(Integer creationIdx, MultipartFile[] files, MultipartFile thumbnail) throws IOException {
         for (MultipartFile file : files) {
-            String targetName ="image/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
-
-            BlobId blobId = BlobId.of(bucketName, targetName);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-                .setContentType(file.getContentType())
+            String key = "image/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
+            PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .contentType(file.getContentType())
                 .build();
 
-            storage.create(blobInfo, file.getBytes());
-            String compTargetName = String.format("https://storage.googleapis.com/%s/%s", bucketName, targetName);
-            if(file.getOriginalFilename().equals((thumbnail.getOriginalFilename()))) {
-                imagePostingRepository.insertImageData(creationIdx, compTargetName, "thumbnail", LocalDateTime.now());
+            s3Client.putObject(request, RequestBody.fromBytes(file.getBytes()));
+            if(file.getOriginalFilename().equals(thumbnail.getOriginalFilename())) {
+                imagePostingRepository.insertImageData(creationIdx, key, "thumbnail",  LocalDateTime.now());
                 continue;
             }
-            imagePostingRepository.insertImageData(creationIdx, compTargetName, "basic", LocalDateTime.now());
+            imagePostingRepository.insertImageData(creationIdx, key, "basic", LocalDateTime.now());
         }
     }
 }
