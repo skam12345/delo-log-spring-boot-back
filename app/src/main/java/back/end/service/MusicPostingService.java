@@ -16,8 +16,7 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 public class MusicPostingService {
     private final S3Client s3Client;
     private final MusicPostingRepository musicPostingRepository;
-    
-    private final String bucketName = "delo-s3";
+
 
     public void insertMusicPosting(Boolean visibled, String title, String writer, String music, String thumbnail, String editorContent, String resultContent, LocalDateTime createdAt) {
         musicPostingRepository.insertMusicPosting(visibled, title, writer, music, thumbnail, editorContent, resultContent, createdAt);
