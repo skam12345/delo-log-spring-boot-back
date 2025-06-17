@@ -4,13 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import back.end.domain.posting.threed.ThreedPosting;
 import back.end.repository.ModelPostingRepository;
 import lombok.RequiredArgsConstructor;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 
 @Service
 @RequiredArgsConstructor
