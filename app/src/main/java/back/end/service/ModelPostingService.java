@@ -15,10 +15,8 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 @Service
 @RequiredArgsConstructor
 public class ModelPostingService {
-    private final S3Client s3Client;
     private final ModelPostingRepository modelPostingRepository;
 
-    private final String bucketName = "delo-s3";
 
     public void insertModelPosting(Boolean visibled, String title, String writer, String thumbnail, String models, String editorContent, String resultContent, LocalDateTime createdAt) {
         modelPostingRepository.insertModelPosting(visibled, title, writer, models, thumbnail, editorContent, resultContent, createdAt);
@@ -38,14 +36,6 @@ public class ModelPostingService {
 
     public String getModels(Integer idx) {
         return modelPostingRepository.getModels(idx);
-    }
-
-    public void deleteFile(String key) {
-        DeleteObjectRequest request = DeleteObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
-        s3Client.deleteObject(request);
     }
 
     public ThreedPosting selectOnePosting(Integer idx) {

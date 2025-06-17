@@ -101,7 +101,6 @@ public class ModelPostingController {
             String keys = modelPostingService.getModels(request.getIdx());
             String[] keyList = keys.split("::");
             for(int i = 0; i < keyList.length; i++) {
-                modelPostingService.deleteFile(keyList[i]);
             }
             modelPostingService.deleteModelPosting(request.getIdx());
 
